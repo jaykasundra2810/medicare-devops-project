@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: medicare-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: medicare
+  template:
+    metadata:
+      labels:
+        app: medicare
+    spec:
+      containers:
+      - name: medicare
+        image: jayk2810/medicare-microservice:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: medicare-service
+spec:
+  selector:
+    app: medicare
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer
